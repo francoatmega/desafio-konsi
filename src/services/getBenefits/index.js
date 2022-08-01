@@ -1,4 +1,4 @@
-const axios = require('axios')
+const requestHandler = require('../../appServices/request')
 
 const authToken = {
   token: null,
@@ -11,14 +11,16 @@ const parseJwt = (token) => {
 
 module.exports = async ({ username, password, cpf }) => {
   if (!authToken.token || Date.now() >= Number(authToken.expiration)) {
-    const data = await axios({
+    const authRequestConfig = {
       method: 'post',
       url: 'http://extratoblubeapp-env.eba-mvegshhd.sa-east-1.elasticbeanstalk.com/login',
       data: {
         login: username,
         senha: password
       }
-    })
+    }
+
+    const { data } = await requestHandler.request(authRequestConfig)
 
     const jwt = parseJwt(data.headers.authorization)
 
@@ -26,13 +28,15 @@ module.exports = async ({ username, password, cpf }) => {
     authToken.expiration = jwt.exp * 1000
   }
 
-  const benefitsData = await axios({
+  const requestConfig = {
     method: 'get',
     url: `http://extratoblubeapp-env.eba-mvegshhd.sa-east-1.elasticbeanstalk.com/offline/listagem/${cpf}`,
     headers: {
       authorization: authToken.token
     }
-  })
+  }
+
+  const benefitsData = await requestHandler.request(requestConfig)
 
   return benefitsData.data?.beneficios?.map(item => item.nb)
 }
