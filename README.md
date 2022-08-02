@@ -19,3 +19,7 @@
 
     * Bastar rodar o comando: **npm build**
     * Bastar subir o container: **start:container**
+
+* Para poder testar o projeto:
+
+    * Dentro do diretório *docs* tem uma collection do postman com a request do desafio.
