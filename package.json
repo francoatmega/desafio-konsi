@@ -7,7 +7,7 @@
     "start": "node index.js",
     "test:integration": "npx jest -c jest.config.integration.js",
     "build": "docker build -t konsi-challenge-api .",
-    "start:container": "docker run -p 3000:3000 konsi-challenge-api -d"
+    "start:container": "docker run -d -p 3000:3000 konsi-challenge-api"
   },
   "devDependencies": {
     "jest": "^26.0.1",
